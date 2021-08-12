@@ -1,5 +1,4 @@
-server:
-  port: 8080
+java.runtime.version = 11
 
 spring:
   servlet:
@@ -27,7 +26,3 @@ logging:
 
 upload:
   path: src/main/resources/images
-
-java:
-  runtime:
-    version: 11
