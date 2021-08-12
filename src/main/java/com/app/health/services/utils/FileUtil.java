@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,6 +22,8 @@ public class FileUtil {
     @Value("${upload.path}")
     private String uploadPath;
 
+    private final static String IMAGE_FORMAT = "jpg";
+
     public String uploadFileAndGetPath(MultipartFile file) {
         String fileName = null;
         if(file != null && !file.getOriginalFilename().isEmpty()) {
@@ -30,16 +33,33 @@ public class FileUtil {
                 dir.mkdir();
             }
             String uniqueFileName = UUID.randomUUID().toString();
-            fileName = uniqueFileName + "." + file.getOriginalFilename();
+            fileName = uniqueFileName + "." + IMAGE_FORMAT;
 
             try {
                 var is = file.getInputStream();
                 Files.copy(is, Paths.get(uploadPath + "/" + fileName), StandardCopyOption.REPLACE_EXISTING);
+                convertImage(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return fileName;
+    }
+
+    public void convertImage(String fileName) {
+        BufferedImage bufferedImage;
+        try {
+            bufferedImage = ImageIO.read(new File(uploadPath + "/" + fileName));
+
+            BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(),
+                    bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+            newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
+
+            ImageIO.write(newBufferedImage, "jpg", new File(uploadPath + "/" + fileName));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public byte[] getStreamOfImage(String name)  {
