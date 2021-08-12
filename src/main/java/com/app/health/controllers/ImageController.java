@@ -27,7 +27,8 @@ public class ImageController {
         this.fileUtil = fileUtil;
     }
 
-    @ApiOperation(value = "Download image", nickname = "PostController.downloadImage")
+    @ApiOperation(value = "Download image", nickname = "PostController.downloadImage",
+            notes = "Use this method for download image")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Image downloaded")})
     @GetMapping(value = "download/{filename:.*}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Object> downloadImage(@PathVariable String filename) {
@@ -37,8 +38,9 @@ public class ImageController {
                 .body(fileUtil.getStreamOfImage(filename));
     }
 
-    @ApiOperation(value = "Download image", nickname = "PostController.downloadImage")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Image downloaded")})
+    @ApiOperation(value = "Get image", nickname = "PostController.getImage",
+            notes = "Use this method for getting image as static content format - .jpg")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Image is got")})
     @GetMapping(value = "/{filename:.*}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
 
