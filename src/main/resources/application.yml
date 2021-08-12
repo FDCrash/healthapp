@@ -8,9 +8,9 @@ spring:
   application:
     name: "HealthApp"
   datasource:
-    url: ${DATABASE_URL :jdbc:postgresql://localhost:5432/healthapp}
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:postgres}
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/healthapp}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
